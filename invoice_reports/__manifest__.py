@@ -1,0 +1,16 @@
+{
+    'name': 'Invoice Reports',
+    'version': '1.0',
+    'summary': 'Custom invoice reports for Odoo',
+    'description': 'This module print pdf report of invoice lines form account.move',
+    'author': 'Your Name',
+    'data': ['report/invoice_report.xml',
+             'report/invoice_report_template.xml'],
+    'depends': ['account', 'base', 'sale'],
+    'installable': True,
+    'application': False,
+    'auto_install': False,
+    'charset': 'utf-8',
+    'price': '1.0',
+    'currency': 'USD',
+}

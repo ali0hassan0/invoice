@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+
+    <template id="layout_invoice_report_template">
+        <t t-call="web.basic_layout">
+
+            <div class="page">
+                <t t-foreach="docs" t-as="doc">
+
+                    <div class="date">
+                        <span class="left-align" style="font-weight: bold;">DATE
+                            <br/>
+                            <t t-esc="doc.invoice_date" style=""/>
+                        </span>
+                        <span class="center-align" style="font-weight: bold;">INVOICE NO
+                            <br/>
+                            <t t-esc="doc.name"/>
+                        </span>
+                        <span class="right-align" style="font-weight: bold;">Source
+                            <br/>
+                            <t t-esc="doc.get_source()"/>
+
+                        </span>
+                    </div>
+                    <br/>
+                    <table class="customer-table">
+                        <tr>
+                            <td rowspan="2" colspan="5" style="font-size: 16px; padding: 10px;">
+                                <div class="point-row">
+                                    <span style="font-weight: bold; text-decoration:underline;">Client Name</span>
+                                    <span style="font-weight: bold; margin-left: 16.1rem;" class="t_center">
+                                        <t t-esc="doc.partner_id.name"/>
+                                    </span>
+                                    <span class="arabic">ﺍﺳﻢ ﺍﻟﻌﻤﻴﻞ</span>
+                                </div>
+                                <div class="point-row">
+                                    <span style="font-weight: bold;text-decoration:underline;">Civil ID NO</span>
+                                    <span style="font-weight: bold; margin-left: 16.8rem;">
+                                        <t t-esc="doc.partner_id.vat"/>
+                                    </span>
+                                    <span class="arabic">ﺍﻟﺮﻗﻢ ﺍﻟﻤﺪﻧﻰ</span>
+                                </div>
+                                <div class="point-row">
+                                    <span style="font-weight: bold;text-decoration:underline;">Mobile NO</span>
+                                    <span style="font-weight: bold; margin-left: 17rem;">
+                                        <t t-esc="doc.partner_id.mobile"/>
+                                    </span>
+                                    <span class="arabic">ﺭﻗﻢ ﺍﻟﻤﻮﺑﺎﻳﻞ</span>
+                                </div>
+                                <div class="point-row">
+                                    <span style="font-weight: bold;text-decoration:underline;">Email Address</span>
+                                    <span style="font-weight: bold; margin-left: 15rem;">
+                                        <t t-esc="doc.partner_id.email"/>
+                                    </span>
+                                    <span class="arabic">ﺍﻟﺒﺮﻳﺪ ﺍﻻﻟﻜﺘﺮﻭﻧﻰ</span>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <tr>
+                                <td style="font-size: 16px; padding: 10px;">
+                                    <span style="font-weight: bold;color:blue; margin-left:3rem; text-decoration:underline;">
+                                        Item Descriprtion
+                                        /Condations / M year
+                                    </span>
+                                    <br/>
+                                    <span style="margin-left:3rem;">ﻭﺻﻒ ﺍﻟﻤﻨﺘﺞ-ﺣﺎﻟﺔﺍﻟﻤﻨﺘﺞ-ﺳﻨﺔﺍﻟﺼﻨﻊ</span>
+                                </td>
+                                <td style="font-size: 16px; padding: 10px;">
+                                    <span style="font-weight: bold;color:blue;">QUANTITY</span>
+                                    <br/>
+                                    <span>ﺍﻟﻌﺪﺩ</span>
+                                </td>
+                                <td style="font-size: 16px; padding: 10px;">
+                                    <span style="font-weight: bold;color:blue;">UNIT PRICE</span>
+                                    <br/>
+                                    <span>ﺳﻌﺮ ﺍﻟﻮﺣﺪﺓ</span>
+                                </td>
+                                <td style="font-size: 16px; padding: 10px;">
+                                    <span style="font-weight: bold; color:blue;">Amount</span>
+                                    <br/>
+                                    <span>كمية</span>
+                                </td>
+                            </tr>
+                        </tr>
+                        <tr>
+                            <t t-foreach="doc.invoice_line_ids" t-as="line">
+                                <tr>
+                                    <td style="font-size: 16px; padding: 10px;">
+                                        <span>
+                                            <t t-esc="line.name"/>
+                                        </span>
+                                    </td>
+                                    <td style="font-size: 16px; padding: 10px;">
+                                        <span>
+                                            <t t-esc="line.quantity"/>
+                                        </span>
+                                    </td>
+                                    <td style="font-size: 16px; padding: 10px;">
+                                        <span>
+                                            <t t-esc="line.price_unit"/>
+                                        </span>
+                                    </td>
+                                    <td style="font-size: 16px; padding: 10px;">
+                                        <span>
+                                            <t t-esc="line.price_subtotal"/>
+                                        </span>
+                                    </td>
+                                </tr>
+                            </t>
+                        </tr>
+                    </table>
+                    <br/>
+                    <br/>
+                    <table style="width: 50%;" class="customer-tables">
+                        <tr>
+                            <td style="font-size: 16px; padding: 5px; background-color: gray;">Total</td>
+                            <td style="font-size: 16px; padding: 5px; background-color: gray;">
+                                <t t-esc="'{0:,.2f}'.format(doc.get_totals())"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; padding: 5px;">Mode Of Payment</td>
+                            <td style="font-size: 16px; padding: 5px;">
+                                <span t-esc="doc.get_invoice_payment_type()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; padding: 5px; background-color:pink;">PAID ON
+                                <t t-esc="doc.get_invoice_payments_date()"/>
+                            </td>
+                            <td style="font-size: 16px; padding: 5px; background-color: pink;">
+                                <t t-esc="doc.get_invoice_payments_amount()"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="font-size: 16px; padding: 5px; background-color: black; color:white;">Due
+                                amount
+                            </td>
+                            <td style="font-size: 16px; padding: 5px; background-color: black; color:white;">
+                                <t t-esc="doc.amount_residual"/>
+                            </td>
+                        </tr>
+
+                    </table>
+
+
+                </t>
+                <style>
+                    .date {
+                    overflow: hidden;
+                    padding-top:7rem;
+                    }
+
+                    .left-align {
+                    float: left;
+                    text-decoration: underline;
+                    text-align: left;
+                    }
+
+                    .center-align {
+                    float: left;
+                    padding-left:36%;
+                    text-align: center;
+                    }
+
+                    .right-align {
+                    float: right;
+                    text-decoration: underline;
+                    text-align: right;
+
+                    }
+                    .customer-table {
+                    border-collapse: collapse;
+                    width: 100%;
+                    }
+                    .customer-tables {
+                    border-collapse: collapse;
+                    width: 50%;
+                    position: fixed;
+                    right:0%;
+                    }
+
+                    .customer-table td {
+                    border: 1px solid black;
+                    padding: 8px;
+                    }
+                    .customer-tables td {
+                    border: 2px solid black;
+                    padding: 8px;
+                    }
+
+                    .point-row {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-bottom: 5px;
+                    }
+
+                    .arabic {
+                    direction: rtl;
+                    white-space: nowrap;
+                    float: right;
+                    text-decoration:underline;
+                    text-align: right; }
+
+                    .sign{
+                    padding-top:15rem;
+
+                    }
+                    .lines{
+                    padding-top:6rem;
+                    }
+                    .t_center{
+                    text-align:center;
+                    float: center;
+                    }
+
+                </style>
+
+                <div class="sign">
+                    <div>
+                        <span style="text-decoration:underline; font-weight: bold; margin-left: 4rem;">Salesperson
+                        </span>
+                        <span style="text-decoration:underline; font-weight: bold; margin-left: 24rem;">Customer
+                            Signature
+                        </span>
+
+                    </div>
+                    <div style="position: relative;">
+                        <span style="text-decoration:underline;  margin-left: 26.7rem; position: relative;">
+                            ﺗﻮﻗﻴﻊ ﺍﻟﻌﻤﻴﻞ
+                        </span>
+                        <span style="text-decoration:underline; margin-left:4.2rem;margin-top:0rem;">ﺗﻮﻗﻴﻊ ﺍﻟﺒﺎﺋﻊ
+                        </span>
+
+                    </div>
+                </div>
+                <div class="lines">
+                    <div>
+                        <span style="text-decoration:underline; font-weight: bold; margin-left: 2rem;">
+                            ___________________________
+                        </span>
+                        <span style="text-decoration:underline; font-weight: bold; margin-left: 20rem;">
+                            ______________________________
+                        </span>
+                    </div>
+                </div>
+
+
+            </div>
+        </t>
+    </template>
+    <template id="account_move_invoice_report">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="invoice_reports.layout_invoice_report_template">
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>
